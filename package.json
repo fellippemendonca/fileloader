@@ -1,0 +1,8 @@
+{
+  "name": "fileloader",
+  "version": "0.0.1",
+  "description": "fileloader",
+  "dependencies": {
+    "js-yaml": "^3.10.0"
+  }
+}
