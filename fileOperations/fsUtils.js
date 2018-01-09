@@ -3,13 +3,13 @@
 const fs = require('fs');
 const yaml = require('js-yaml');
 
-// functions index
+// Exportable function index;
 module.exports = {
-  mapDirFiles: mapDirFiles
-}
+  mapFiles: mapFiles
+};
 
-// Map Files in path in a list of Objects.
-function mapDirFiles(path) {
+// Map Files in path in a list of Objects;
+function mapFiles(path) {
   return listPathFiles(path)
     .then(files => {
       return files.map(file => {
@@ -20,10 +20,13 @@ function mapDirFiles(path) {
 }
 
 
+// HELPERS
+// Return an array of file names inside de directory path;
 async function listPathFiles(path) {
   return await fs.readdirSync(path);
 }
 
+// Return an object with all attributes of the file with the content already parsed;
 function extractFileContents(file) {
   let splitDot = file.name.split('.');
   let fileInfo = {
@@ -35,14 +38,16 @@ function extractFileContents(file) {
   return fileInfo;
 }
 
+// Return a parsed file content using the extension input to determine what the correct parser;
 function parseFileContents(path, extension) {
   switch (extension) {
-    case 'json': return parseJsonFile(path); break;
     case 'yml': return parseYamlFile(path); break;
-    default: return {}; break;
+    case 'json': return parseJsonFile(path); break;
+    default: return { error: `file extension: "${extension}" is not compatible.`}; break;
   }
 }
 
+// Try to parse a .json file;
 function parseJsonFile(path) {
   let parsed;
   try { parsed = JSON.parse(fs.readFileSync(path, 'utf8')) }
@@ -50,6 +55,7 @@ function parseJsonFile(path) {
   return parsed;
 }
 
+// Try to parse a .yml file
 function parseYamlFile(path) {
   let parsed;
   try { parsed = yaml.safeLoad(fs.readFileSync(path, 'utf8')) }

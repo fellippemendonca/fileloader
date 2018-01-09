@@ -1,12 +1,12 @@
 'use strict';
 
-const path = './files';
-const GlobalConfig = require('./init/globalConfig');
+const getConfig = require('./configUtils/getConfig');
 
-
-let globalConfig = new GlobalConfig();
-
-let finalResult = globalConfig.load(path)
-  .then(() => { return globalConfig.getConfig('forms', 'bkit', 'production') });
-
-  finalResult.then(res => { console.log(res)  });
+// Example using the async function getConfig();
+getConfig('checkout', 'anpl', 'production')
+  .then(res => {
+    console.log(res);
+  })
+  .catch(err => {
+    console.log(err.message);
+  });
